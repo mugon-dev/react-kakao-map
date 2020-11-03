@@ -7,14 +7,19 @@ import Modal from "./kakao/Modal";
 function App() {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState();
+  const [location, setLocation] = useState({
+    latitude: "",
+    longitude: "",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = (value) => {
+    console.log(value);
+    setLocation(value);
     setOpen(false);
-    setSearchValue(value);
   };
   const searchKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -22,7 +27,7 @@ function App() {
       setSearchValue(e.target.value);
       setOpen(true);
       //setSearch(e.target.value);
-      console.log(searchValue);
+      console.log("받아온 값: " + searchValue);
     }
   };
   return (
@@ -38,7 +43,15 @@ function App() {
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Open simple dialog
       </Button>
-      <Modal searchValue={searchValue} open={open} onClose={handleClose} />
+      <Modal
+        searchValue={searchValue}
+        open={open}
+        onClose={handleClose}
+        location={setLocation}
+      />
+      <div>받아온 값</div>
+      <div>{location.latitude}</div>
+      <div>{location.longitude}</div>
     </div>
   );
 }

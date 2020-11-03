@@ -11,10 +11,11 @@ const { kakao } = window;
 function Map(props) {
   const classes = useStyles();
   const { onClose, search, open } = props;
-  const { location, setLocation } = useState({
+  const [location, setLocation] = useState({
     latitude: "",
     longitude: "",
   });
+
   console.log("map: " + search);
   useEffect(() => {
     const container = document.getElementById("myMap");
@@ -92,17 +93,15 @@ function Map(props) {
           // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
           infowindow.setContent(content);
           infowindow.open(map, marker);
-          var latlng = mouseEvent.latLng;
-          var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
-          message += "경도는 " + latlng.getLng() + " 입니다";
-          console.log(message);
-          setLocation((prevState) => {
-            return {
-              latitude: latlng.getLat(),
-              longitude: latlng.getLng(),
-            };
-          });
         }
+      });
+      var latlng = mouseEvent.latLng;
+      var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+      message += "경도는 " + latlng.getLng() + " 입니다";
+      console.log(message);
+      setLocation({
+        latitude: latlng.getLat(),
+        longitude: latlng.getLng(),
       });
     });
 
@@ -137,8 +136,9 @@ function Map(props) {
     }
   }, [search]);
 
-  const handleListItemClick = (value) => {
-    console.log(location);
+  const handleClose = (value) => {
+    console.log("위도: " + location.latitude);
+    console.log("경도: " + location.longitude);
     onClose(value);
   };
 
@@ -161,7 +161,7 @@ function Map(props) {
           variant="contained"
           color="primary"
           size="small"
-          onClick={handleListItemClick}
+          onClick={() => handleClose(location)}
           className={classes.button}
           startIcon={<SaveIcon />}
         >
